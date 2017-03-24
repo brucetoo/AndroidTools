@@ -1,6 +1,7 @@
 package template;
 
 import template.adb.AdbFacade;
+import template.adb.AdbUtil;
 import template.adb.AppBean;
 import com.intellij.openapi.project.Project;
 
@@ -24,7 +25,7 @@ public class ToolsDialog extends JDialog {
 
         bean.activityName = "com.pp.assistant.activity.PPMainActivity";
         bean.packageName = "com.pp.assistant";
-        bean.adbPath = "/Users/brucetoo/Library/Android/sdk/platform-tools/adb";
+        bean.adbPath = AdbUtil.getAdbPath();
 
         MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {

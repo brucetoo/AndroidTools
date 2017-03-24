@@ -6,6 +6,7 @@ import com.android.ddmlib.IDevice;
 import com.android.ddmlib.ShellCommandUnresponsiveException;
 import com.android.ddmlib.TimeoutException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -34,4 +35,24 @@ public class AdbUtil {
         }
     }
 
+    public static final String ANDROID_HOME = "ANDROID_HOME";
+
+    public static String getAdbPath() {
+        StringBuffer adbPath = new StringBuffer();
+        adbPath.append(getAndroidHome());
+        adbPath.append(File.separator);
+        adbPath.append("platform-tools");
+        adbPath.append(File.separator);
+        adbPath.append("adb");
+        return adbPath.toString();
+    }
+
+    public static String getAndroidHome() {
+        String androidHome = System.getenv(ANDROID_HOME);
+        if (androidHome == null) {
+            throw new RuntimeException("Environment variable '" + ANDROID_HOME
+                    + "' was not found!");
+        }
+        return androidHome;
+    }
 }
