@@ -13,7 +13,6 @@ public class ToolsDialog extends JDialog {
     private JList list;
     private JRadioButton wdjButton;
     private JRadioButton ppButton;
-    private JButton buttonOK;
     private AppBean bean = new AppBean();
     private Project project;
 
@@ -22,7 +21,6 @@ public class ToolsDialog extends JDialog {
         setContentPane(contentPane);
         setModal(false);
         setUndecorated(false);
-        getRootPane().setDefaultButton(buttonOK);
 
         bean.activityName = "com.pp.assistant.activity.PPMainActivity";
         bean.packageName = "com.pp.assistant";
