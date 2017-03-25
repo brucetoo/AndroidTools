@@ -10,5 +10,45 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="ddmlib" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/android-common.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/android-rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/android.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/androidAnnotations.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/androidWidgets/theme-editor-widgets.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/asm-5.0.3.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/asm-analysis-5.0.3.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/asm-tree-5.0.3.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/bcpkix-jdk15on-1.48.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/bcprov-jdk15on-1.48.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/builder-model-1.4.0-beta2.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/builder-model-1.5.0-beta2.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/common.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/commons-compress-1.0.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/freemarker-2.3.20.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/GoogleFeedback.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/jarutils.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/javawriter-2.2.1.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/jps/android-gradle-jps.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/jps/android-jps-plugin.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/jsr305-1.3.9.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/kxml2-2.3.0.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/layoutlib-api.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/lombok-ast-0.2.3.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/manifest-merger.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/resources_en.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/sdk-common.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/sdk-tools.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/sdklib.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/spantable.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/templates/eclipse/gradle/wrapper/gradle/wrapper/gradle-wrapper.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2016.1/178543287d6c905a8d64d474cf5a6958c11179f1/ideaIC-2016.1/plugins/android/lib/templates/gradle/wrapper/gradle/wrapper/gradle-wrapper.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

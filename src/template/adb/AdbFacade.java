@@ -1,5 +1,8 @@
 package template.adb;
 
+import com.android.tools.idea.run.AndroidDevice;
+import template.OnConnectCallBack;
+import template.ToolsDialog;
 import template.adb.command.*;
 import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.IDevice;
@@ -13,54 +16,50 @@ import java.util.concurrent.Executors;
 
 public class AdbFacade {
 
-    private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat("Tools-%d").build());
+    public static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat("AndroidTools-%d").build());
 
-    public static void uninstall(Project project,AppBean bean) {
-        executeOnDevice(project,bean, new UninstallCommand());
+    public static void uninstall(Project project, AppBean bean, OnConnectCallBack callBack) {
+        executeOnDevice(project, bean, new UninstallCommand(), callBack);
     }
 
-    public static void kill(Project project,AppBean bean) {
-        executeOnDevice(project,bean, new KillCommand());
+    public static void kill(Project project, AppBean bean, OnConnectCallBack callBack) {
+        executeOnDevice(project, bean, new KillCommand(), callBack);
     }
 
-    public static void startDefaultActivity(Project project,AppBean bean) {
-        executeOnDevice(project,bean, new StartDefaultActivityCommand(false));
+    public static void startDefaultActivity(Project project, AppBean bean, OnConnectCallBack callBack) {
+        executeOnDevice(project, bean, new StartDefaultActivityCommand(false), callBack);
     }
 
-    public static void startDefaultActivityWithDebugger(Project project,AppBean bean) {
-        executeOnDevice(project,bean, new StartDefaultActivityCommand(true));
+    public static void startDefaultActivityWithDebugger(Project project, AppBean bean, OnConnectCallBack callBack) {
+        executeOnDevice(project, bean, new StartDefaultActivityCommand(true), callBack);
     }
 
-    public static void restartDefaultActivity(Project project,AppBean bean) {
-        executeOnDevice(project,bean, new RestartPackageCommand());
+    public static void restartDefaultActivity(Project project, AppBean bean, OnConnectCallBack callBack) {
+        executeOnDevice(project, bean, new RestartPackageCommand(), callBack);
     }
 
-    public static void restartDefaultActivityWithDebugger(Project project,AppBean bean) {
-        executeOnDevice(project,bean, new CommandList(new KillCommand(), new StartDefaultActivityCommand(true)));
+    public static void restartDefaultActivityWithDebugger(Project project, AppBean bean, OnConnectCallBack callBack) {
+        executeOnDevice(project, bean, new CommandList(new KillCommand(), new StartDefaultActivityCommand(true)), callBack);
     }
 
-    public static void clearData(Project project,AppBean bean) {
-        executeOnDevice(project,bean, new ClearDataCommand());
+    public static void clearData(Project project, AppBean bean, OnConnectCallBack callBack) {
+        executeOnDevice(project, bean, new ClearDataCommand(), callBack);
     }
 
-    public static void clearDataAndRestart(Project project,AppBean bean) {
-        executeOnDevice(project,bean, new ClearDataAndRestartCommand());
+    public static void clearDataAndRestart(Project project, AppBean bean, OnConnectCallBack callBack) {
+        executeOnDevice(project, bean, new ClearDataAndRestartCommand(), callBack);
     }
 
-    private static void executeOnDevice(Project project,final AppBean bean, final Command runnable) {
-        IDevice device;
+    private static void executeOnDevice(Project project, final AppBean bean, final Command runnable, OnConnectCallBack callBack) {
         AndroidDebugBridge.initIfNeeded(false);
         AndroidDebugBridge bridge = AndroidDebugBridge.createBridge(
                 bean.adbPath, false);
         waitForDevice(bridge);
         IDevice devices[] = bridge.getDevices();
-        device = devices[0];
-
-        if (device != null) {
-            // "com.pp.assistant.activity.PPMainActivity"  "com.pp.assistant"
-                EXECUTOR.submit((Runnable) () -> runnable.run(project,bean.activityName, device, bean.packageName));
+        if (devices.length == 0) {
+            callBack.connectCallBack(true,devices,runnable);
         } else {
-            NotificationHelper.error("No Device found");
+            callBack.connectCallBack(false,devices,runnable);
         }
     }
 

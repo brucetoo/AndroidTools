@@ -1,13 +1,19 @@
 package template.adb;
 
+import com.intellij.openapi.project.Project;
+import org.apache.commons.lang.StringUtils;
+import template.adb.command.SystemOs;
 import template.adb.command.receiver.GenericReceiver;
 import com.android.ddmlib.AdbCommandRejectedException;
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.ShellCommandUnresponsiveException;
 import com.android.ddmlib.TimeoutException;
+import template.ui.NotificationHelper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class AdbUtil {
@@ -37,21 +43,33 @@ public class AdbUtil {
 
     public static final String ANDROID_HOME = "ANDROID_HOME";
 
-    public static String getAdbPath() {
+    public static String getAdbPath(Project project) {
         StringBuffer adbPath = new StringBuffer();
-        adbPath.append(getAndroidHome());
+        adbPath.append(getAndroidHome(project));
         adbPath.append(File.separator);
         adbPath.append("platform-tools");
         adbPath.append(File.separator);
         adbPath.append("adb");
+        adbPath.append(SystemOs.platformExecutableSuffixExe());
         return adbPath.toString();
     }
 
-    public static String getAndroidHome() {
+    public static String getAndroidHome(Project project) {
         String androidHome = System.getenv(ANDROID_HOME);
-        if (androidHome == null) {
-            throw new RuntimeException("Environment variable '" + ANDROID_HOME
-                    + "' was not found!");
+        Map<String, String> map = System.getenv();
+        StringBuffer builder = new StringBuffer();
+        builder.append("Following is system environment params: \n");
+        for (Iterator<String> i = map.keySet().iterator(); i.hasNext(); ) {
+            String key = i.next();
+            builder.append("Key = " + key + " value = " + map.get(key));
+            builder.append("\n");
+        }
+        NotificationHelper.info(builder.toString());
+        if (StringUtils.isEmpty(androidHome)) {
+            NotificationHelper.infoInProject("SDK Location Path Not Found In template.adb.command.SystemOs", project);
+            NotificationHelper.error("SDK Location Path Not Found In template.adb.command.SystemOs /n Please check out if ANDROID_HOME is set in system environment \n " +
+                    "http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/3756686#3756686 \n" +
+                    "http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/588442#588442");
         }
         return androidHome;
     }
