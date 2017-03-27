@@ -94,6 +94,7 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
                 AdbFacade.clearDataAndRestart(project, bean, this);
                 break;
         }
+        setVisible(false);
     }
 
 
