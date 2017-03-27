@@ -66,8 +66,8 @@ public class AdbUtil {
         }
         NotificationHelper.info(builder.toString());
         if (StringUtils.isEmpty(androidHome)) {
-            NotificationHelper.infoInProject("SDK Location Path Not Found In template.adb.command.SystemOs", project);
-            NotificationHelper.error("SDK Location Path Not Found In template.adb.command.SystemOs /n Please check out if ANDROID_HOME is set in system environment \n " +
+            NotificationHelper.infoInProject("SDK Location Path Not Found In Os", project);
+            NotificationHelper.error("SDK Location Path Not Found In Os /n Please check out if ANDROID_HOME is set in system environment correctly\n " +
                     "http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/3756686#3756686 \n" +
                     "http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/588442#588442");
         }
