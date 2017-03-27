@@ -2,6 +2,7 @@ package template;
 
 import com.android.ddmlib.Client;
 import com.android.ddmlib.IDevice;
+import org.apache.http.util.TextUtils;
 import template.adb.AdbFacade;
 import template.adb.AdbUtil;
 import template.adb.AppBean;
@@ -29,6 +30,10 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
 
         bean.activityName = "com.pp.assistant.activity.PPMainActivity";
         bean.packageName = "com.pp.assistant";
+        if (TextUtils.isEmpty(AdbUtil.getAndroidHome(project))) {
+            setVisible(false);
+            return;
+        }
         bean.adbPath = AdbUtil.getAdbPath(project);
 
         MouseListener mouseListener = new MouseAdapter() {
