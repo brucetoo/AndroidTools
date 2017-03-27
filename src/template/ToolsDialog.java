@@ -101,7 +101,7 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
     public void connectCallBack(boolean noDevice, IDevice devices[], Command runnable) {
         if (noDevice) {
             ToolsDialog.this.setVisible(false);
-            NotificationHelper.infoInProject("No Devices Found!", project);
+            NotificationHelper.error("No Devices Found!");
         } else {
             IDevice device = devices[0];
 
