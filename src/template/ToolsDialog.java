@@ -19,6 +19,7 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
     private JList list;
     private JRadioButton wdjButton;
     private JRadioButton ppButton;
+    private JComboBox comboBox;
     private AppBean bean = new AppBean();
     private Project project;
 
@@ -35,6 +36,16 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
             return;
         }
         bean.adbPath = AdbUtil.getAdbPath(project);
+        comboBox.setEnabled(true);
+        comboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(ItemEvent.SELECTED == e.getStateChange()){
+                    NotificationHelper.info("New selected device :"  + e.getItem());
+                }
+            }
+        });
+        AdbFacade.fetchDevices(project,bean,this);
 
         MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -109,12 +120,20 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
             ToolsDialog.this.setVisible(false);
             NotificationHelper.error("No Devices Found!");
         } else {
-            IDevice device = devices[0];
-
-            //TODO add devices chooser!!!
-            if (device != null) {
-                // "com.pp.assistant.activity.PPMainActivity"  "com.pp.assistant"
-                AdbFacade.EXECUTOR.submit((Runnable) () -> runnable.run(project, bean.activityName, device, bean.packageName));
+            if(runnable != null) {
+                IDevice device = devices[comboBox.getSelectedIndex()];
+                if (device != null) {
+                    // "com.pp.assistant.activity.PPMainActivity"  "com.pp.assistant"
+                    AdbFacade.EXECUTOR.submit((Runnable) () -> runnable.run(project, bean.activityName, device, bean.packageName));
+                }
+            }else {
+                for (IDevice dev : devices) {
+                    String name = dev.getName();
+                    name = name.substring(0,name.lastIndexOf("-")).toUpperCase();
+                    name += " Android:" + dev.getProperty(IDevice.PROP_BUILD_VERSION);
+                    comboBox.addItem(name);
+                }
+                comboBox.setSelectedItem(devices[0]);
             }
 
             StringBuffer deviceInfo = new StringBuffer();
@@ -125,14 +144,14 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
             }
             NotificationHelper.info(deviceInfo.toString());
 
-            StringBuffer clientInfo = new StringBuffer();
-            clientInfo.append("Following is Clients: \n");
-            for (Client client : device.getClients()) {
-                clientInfo.append("ClientDescription = " + client.getClientData().getClientDescription()
-                        + "  DebuggerListenPort() = " + client.getDebuggerListenPort());
-                clientInfo.append("\n");
-            }
-            NotificationHelper.info(clientInfo.toString());
+//            StringBuffer clientInfo = new StringBuffer();
+//            clientInfo.append("Following is Clients: \n");
+//            for (Client client : device.getClients()) {
+//                clientInfo.append("ClientDescription = " + client.getClientData().getClientDescription()
+//                        + "  DebuggerListenPort() = " + client.getDebuggerListenPort());
+//                clientInfo.append("\n");
+//            }
+//            NotificationHelper.info(clientInfo.toString());
         }
     }
 }

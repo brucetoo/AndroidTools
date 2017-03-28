@@ -50,6 +50,10 @@ public class AdbFacade {
         executeOnDevice(project, bean, new ClearDataAndRestartCommand(), callBack);
     }
 
+    public static void fetchDevices(Project project,AppBean bean,OnConnectCallBack callBack){
+        executeOnDevice(project, bean, null, callBack);
+    }
+
     private static void executeOnDevice(Project project, final AppBean bean, final Command runnable, OnConnectCallBack callBack) {
         AndroidDebugBridge.initIfNeeded(false);
         AndroidDebugBridge bridge = AndroidDebugBridge.createBridge(

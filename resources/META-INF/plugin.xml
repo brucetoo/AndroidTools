@@ -32,11 +32,11 @@
     <!-- Add your actions here -->
     <action id="action.android.tools" class="template.ToolsAction" text="AndroidTools">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="shift meta A" second-keystroke="shift ctrl Q"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift meta A"/>
     </action>
     <action id="android.transition" class="template.translate.TransitionAction" text="Transition">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="shift meta T" second-keystroke="shift ctrl W"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift meta T"/>
     </action>
   </actions>
 
