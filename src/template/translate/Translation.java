@@ -91,7 +91,7 @@ public class Translation {
         String us_phonetic = (String) basic.get(US_PHONETIC);
         String uk_phonetic = (String) basic.get(UK_PHONETIC);
         if (us_phonetic == null && uk_phonetic == null) {
-            phonetic = "拼音：[" + (String) basic.get(PHONETIC) + "];";
+            phonetic = "拼音：[" + basic.get(PHONETIC) + "];";
         } else {
             if (us_phonetic != null) {
                 phonetic = "美式：[" + us_phonetic + "];";

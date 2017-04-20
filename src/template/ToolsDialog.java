@@ -1,8 +1,6 @@
 package template;
 
-import com.android.ddmlib.Client;
 import com.android.ddmlib.IDevice;
-import org.apache.http.util.TextUtils;
 import template.adb.AdbFacade;
 import template.adb.AdbUtil;
 import template.adb.AppBean;
@@ -12,6 +10,7 @@ import template.ui.NotificationHelper;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.HashMap;
 
 
 public class ToolsDialog extends JDialog implements OnConnectCallBack {
@@ -20,6 +19,7 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
     private JRadioButton wdjButton;
     private JRadioButton ppButton;
     private JComboBox comboBox;
+    private DefaultComboBoxModel comboBoxModel;
     private AppBean bean = new AppBean();
     private Project project;
 
@@ -31,21 +31,22 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
 
         bean.activityName = "com.pp.assistant.activity.PPMainActivity";
         bean.packageName = "com.pp.assistant";
-        if (TextUtils.isEmpty(AdbUtil.getAndroidHome(project))) {
-            setVisible(false);
-            return;
-        }
         bean.adbPath = AdbUtil.getAdbPath(project);
+
+        comboBoxModel = new DefaultComboBoxModel();
         comboBox.setEnabled(true);
+        comboBox.setModel(comboBoxModel);
+
         comboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(ItemEvent.SELECTED == e.getStateChange()){
-                    NotificationHelper.info("New selected device :"  + e.getItem());
+                comboBox.setSelectedItem(e.getItem());
+                if (ItemEvent.SELECTED == e.getStateChange()) {
+                    NotificationHelper.info("New selected device :" + e.getItem());
                 }
             }
         });
-        AdbFacade.fetchDevices(project,bean,this);
+        AdbFacade.fetchDevices(project, bean, this);
 
         MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -113,45 +114,75 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
         setVisible(false);
     }
 
+    private HashMap<IDevice, String> mDevices = new HashMap<>();
 
     @Override
-    public void connectCallBack(boolean noDevice, IDevice devices[], Command runnable) {
-        if (noDevice) {
+    public void onFirstCall(IDevice[] devices) {
+        for (IDevice device : devices) {
+            if (!mDevices.containsKey(device)) {
+                String name = device.getName();
+                name = name.substring(0, name.lastIndexOf("-")).toUpperCase();
+                name += " "+ device.getProperty(IDevice.PROP_BUILD_VERSION);
+                comboBoxModel.addElement(name);
+                mDevices.put(device, name);
+            }
+        }
+    }
+
+    @Override
+    public void onRunCommand(Command runnable) {
+        if (mDevices.size() == 0) {
             ToolsDialog.this.setVisible(false);
             NotificationHelper.error("No Devices Found!");
         } else {
-            if(runnable != null) {
-                IDevice device = devices[comboBox.getSelectedIndex()];
-                if (device != null) {
+            String value = (String) comboBox.getSelectedItem();
+            IDevice[] keys = mDevices.keySet().toArray(new IDevice[0]);
+            for (int i = 0; i < keys.length; i++) {
+                IDevice key = keys[i];
+                if (mDevices.get(key).equals(value)) {
                     // "com.pp.assistant.activity.PPMainActivity"  "com.pp.assistant"
-                    AdbFacade.EXECUTOR.submit((Runnable) () -> runnable.run(project, bean.activityName, device, bean.packageName));
+                    AdbFacade.EXECUTOR.submit((Runnable) () -> runnable.run(project, bean.activityName, key, bean.packageName));
                 }
-            }else {
-                for (IDevice dev : devices) {
-                    String name = dev.getName();
-                    name = name.substring(0,name.lastIndexOf("-")).toUpperCase();
-                    name += " Android:" + dev.getProperty(IDevice.PROP_BUILD_VERSION);
-                    comboBox.addItem(name);
-                }
-                comboBox.setSelectedItem(devices[0]);
             }
+        }
+    }
 
-            StringBuffer deviceInfo = new StringBuffer();
-            deviceInfo.append("Following is Devices: \n");
-            for (IDevice dev : devices) {
-                deviceInfo.append("Device Name = " + dev.getName() + "  SerialNumber = " + dev.getSerialNumber());
-                deviceInfo.append("\n");
+    @Override
+    public void onDeviceConnected(IDevice device) {
+        if (!mDevices.containsKey(device)) {
+            String name = device.getName();
+            int indexOf = name.lastIndexOf("-");
+            if (indexOf != -1) {
+                name = name.substring(0, indexOf).toUpperCase();
             }
-            NotificationHelper.info(deviceInfo.toString());
+            name += " " + device.getProperty(IDevice.PROP_BUILD_VERSION);
+            mDevices.put(device, name);
+            comboBoxModel.addElement(name);
+        }
+    }
 
-//            StringBuffer clientInfo = new StringBuffer();
-//            clientInfo.append("Following is Clients: \n");
-//            for (Client client : device.getClients()) {
-//                clientInfo.append("ClientDescription = " + client.getClientData().getClientDescription()
-//                        + "  DebuggerListenPort() = " + client.getDebuggerListenPort());
-//                clientInfo.append("\n");
-//            }
-//            NotificationHelper.info(clientInfo.toString());
+    @Override
+    public void onDeviceDisconnected(IDevice iDevice) {
+        if (mDevices.size() != 0 && mDevices.containsKey(iDevice)) {
+            String value = mDevices.remove(iDevice);
+            comboBoxModel.removeElement(value);
+        }
+    }
+
+    @Override
+    public void onDeviceChanged(IDevice iDevice, int changeMask) {
+
+        //update name if needed
+        if (mDevices.size() != 0 && mDevices.containsKey(iDevice)) {
+            String value = mDevices.get(iDevice);
+            if (value.contains("null")) {
+                comboBoxModel.removeElement(value);
+                String name = iDevice.getName();
+                name = name.substring(0, name.lastIndexOf("-")).toUpperCase();
+                name += " " + iDevice.getProperty(IDevice.PROP_BUILD_VERSION);
+                comboBoxModel.addElement(name);
+                mDevices.replace(iDevice, name);
+            }
         }
     }
 }

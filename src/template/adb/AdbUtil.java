@@ -11,9 +11,12 @@ import com.android.ddmlib.TimeoutException;
 import template.ui.NotificationHelper;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class AdbUtil {
@@ -41,36 +44,32 @@ public class AdbUtil {
         }
     }
 
-    public static final String ANDROID_HOME = "ANDROID_HOME";
+    public static final String SDK_DIR = "sdk.dir";
+    public static final String PROPERTIES = "/local.properties";
 
     public static String getAdbPath(Project project) {
         StringBuffer adbPath = new StringBuffer();
-        adbPath.append(getAndroidHome(project));
-        adbPath.append(File.separator);
-        adbPath.append("platform-tools");
-        adbPath.append(File.separator);
-        adbPath.append("adb");
-        adbPath.append(SystemOs.platformExecutableSuffixExe());
-        return adbPath.toString();
-    }
+        File adb = new File(project.getBasePath() + PROPERTIES);
+        try {
+            Properties properties = new Properties();
+            FileInputStream inputStream = new FileInputStream(adb);
+            properties.load(inputStream);
+            String property = properties.getProperty(SDK_DIR);
+            adbPath.append(property);
+            adbPath.append(File.separator);
+            adbPath.append("platform-tools");
+            adbPath.append(File.separator);
+            adbPath.append("adb");
+            adbPath.append(SystemOs.platformExecutableSuffixExe());
+            NotificationHelper.info("local.properties:" + adb.getAbsolutePath() + " adbPath:" + adbPath);
+        } catch (FileNotFoundException e) {
+            NotificationHelper.error("Local.properties not include in your project!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            NotificationHelper.error("Get adb path failed!");
+            e.printStackTrace();
+        }
 
-    public static String getAndroidHome(Project project) {
-        String androidHome = System.getenv(ANDROID_HOME);
-        Map<String, String> map = System.getenv();
-        StringBuffer builder = new StringBuffer();
-        builder.append("Following is system environment params: \n");
-        for (Iterator<String> i = map.keySet().iterator(); i.hasNext(); ) {
-            String key = i.next();
-            builder.append("Key = " + key + " value = " + map.get(key));
-            builder.append("\n");
-        }
-        NotificationHelper.info(builder.toString());
-        if (StringUtils.isEmpty(androidHome)) {
-            NotificationHelper.infoInProject("SDK Location Path Not Found In Os", project);
-            NotificationHelper.error("SDK Location Path Not Found In Os \n Please check out if ANDROID_HOME is set in system environment correctly\n " +
-                    (SystemOs.isWindows() ? "" : ("http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/3756686#3756686 \n" +
-                    "http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/588442#588442")));
-        }
-        return androidHome;
+        return adbPath.toString();
     }
 }

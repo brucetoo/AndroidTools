@@ -1,6 +1,5 @@
 package template.adb;
 
-import com.android.tools.idea.run.AndroidDevice;
 import template.OnConnectCallBack;
 import template.ToolsDialog;
 import template.adb.command.*;
@@ -55,16 +54,44 @@ public class AdbFacade {
     }
 
     private static void executeOnDevice(Project project, final AppBean bean, final Command runnable, OnConnectCallBack callBack) {
-        AndroidDebugBridge.initIfNeeded(false);
-        AndroidDebugBridge bridge = AndroidDebugBridge.createBridge(
-                bean.adbPath, false);
-        waitForDevice(bridge);
-        IDevice devices[] = bridge.getDevices();
-        if (devices.length == 0) {
-            callBack.connectCallBack(true,devices,runnable);
-        } else {
-            callBack.connectCallBack(false,devices,runnable);
+
+        if(runnable == null) {
+            AndroidDebugBridge.initIfNeeded(false);
+            AndroidDebugBridge bridge = AndroidDebugBridge.createBridge(
+                    bean.adbPath, false);
+            AndroidDebugBridge.addDeviceChangeListener(new AndroidDebugBridge.IDeviceChangeListener() {
+                @Override
+                public void deviceConnected(IDevice iDevice) {
+                    NotificationHelper.info("Device connected -> " + iDevice.getName());
+                    callBack.onDeviceConnected(iDevice);
+                }
+
+                @Override
+                public void deviceDisconnected(IDevice iDevice) {
+                    NotificationHelper.info("Device disconnected -> " + iDevice.getName());
+                    callBack.onDeviceDisconnected(iDevice);
+                }
+
+                @Override
+                public void deviceChanged(IDevice iDevice, int i) {
+                    //i indicating what changed in the <code>Client</code>
+                    NotificationHelper.info("Device changed -> " + iDevice.getName());
+                    callBack.onDeviceChanged(iDevice, i);
+                }
+            });
+
+            waitForDevice(bridge);
+            IDevice devices[] = bridge.getDevices();
+            callBack.onFirstCall(devices);
+        }else {
+            callBack.onRunCommand(runnable);
         }
+
+//        if (devices.length == 0) {
+//            callBack.connectCallBack(true,devices,runnable);
+//        } else {
+//            callBack.connectCallBack(false,devices,runnable);
+//        }
     }
 
     private static void waitForDevice(AndroidDebugBridge bridge) {
