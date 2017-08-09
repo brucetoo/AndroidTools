@@ -29,9 +29,19 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
         setModal(false);
         setUndecorated(false);
 
-        bean.activityName = "com.pp.assistant.activity.PPMainActivity";
+        bean.activityName = "com.pp.assistant.activity.MainActivity";
         bean.packageName = "com.pp.assistant";
         bean.adbPath = AdbUtil.getAdbPath(project);
+
+        // TODO: 09/08/2017 动态获取debuggable app
+        /**1.debuggable app
+        aapt dump badging /path/to/apk | grep -c application-debuggable
+
+         2. 获取对应包名的默认启动activity
+         adb shell monkey -p ${package_name} -c android.intent.category.LAUNCHER 1;
+         */
+//        adb shell logcat -d | grep 'START u0' | tail -n 1 | sed 's/.*cmp=\(.*\)} .*/\1/g'
+
 
         comboBoxModel = new DefaultComboBoxModel();
         comboBox.setEnabled(true);
@@ -61,11 +71,11 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     ppButton.setSelected(false);
-                    bean.activityName = "com.pp.assistant.activity.PPMainActivity";
+                    bean.activityName = "com.pp.assistant.activity.MainActivity";
                     bean.packageName = "com.wandoujia.phoenix2";
                 } else if (e.getStateChange() == ItemEvent.DESELECTED) {
                     ppButton.setSelected(true);
-                    bean.activityName = "com.pp.assistant.activity.PPMainActivity";
+                    bean.activityName = "com.pp.assistant.activity.MainActivity";
                     bean.packageName = "com.pp.assistant";
                 }
             }
@@ -140,7 +150,7 @@ public class ToolsDialog extends JDialog implements OnConnectCallBack {
             for (int i = 0; i < keys.length; i++) {
                 IDevice key = keys[i];
                 if (mDevices.get(key).equals(value)) {
-                    // "com.pp.assistant.activity.PPMainActivity"  "com.pp.assistant"
+                    // "com.pp.assistant.activity.MainActivity"  "com.pp.assistant"
                     AdbFacade.EXECUTOR.submit((Runnable) () -> runnable.run(project, bean.activityName, key, bean.packageName));
                 }
             }
